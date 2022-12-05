@@ -532,15 +532,73 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"ebWYT":[function(require,module,exports) {
-//  console.log("Hallo Lection 9");
-const logMessege = ()=>{
-    console.log("Лог вызова callback через 3 сек");
+// //  console.log("Hallo Lection 9");
+// // const date1 = new Date().getTime();
+// // console.log('date1', date1);
+// // // console.log(date.getMonth());
+// // // console.log(date.getTime());
+// // setTimeout(() => {
+// //     const date2 = new Date().getTime();
+// //     console.log('date1', date1);
+// //     console.log('date2', date2);
+// //     console.log(date2 - date1);
+// // }, 3000)
+// const date1 = Date.now().getTime();
+// console.log('date1', date1);
+// setTimeout(() => {
+//     const date2 = Date.now().getTime();
+//     console.log('date1', date1);
+//     console.log('date2', date2);
+//     console.log(date2 - date1);
+// }, 3000)
+//========== TIMER
+const refs = {
+    startBtn: document.querySelector("button[data-action-start]"),
+    stopBtn: document.querySelector("button[data-action-stop]"),
+    clockface: document.querySelector(".js-clock")
 };
-console.log("До вызова setTimeout");
-setTimeout(()=>{
-    console.log("внутри callback для setTimeout");
-}, 2000);
-console.log("после вызова setTimeout");
+const timer = {
+    intervalId: null,
+    isActive: false,
+    start () {
+        if (this.isActive) return;
+        const startTime = Date.now();
+        this.isActive = true;
+        this.intervalId = setInterval(()=>{
+            const currentTime = Date.now();
+            const time1 = currentTime - startTime;
+            const timeClock = getTime(time1);
+            updateClock(timeClock);
+        }, 1000);
+    },
+    stop () {
+        clearInterval(this.intervalId);
+        this.isActive = false;
+    }
+};
+refs.startBtn.addEventListener("click", ()=>{
+    timer.start();
+});
+refs.stopBtn.addEventListener("click", ()=>{
+    timer.stop();
+});
+function updateClock({ hours , mins , secs  }) {
+    refs.clockface.textContent = `${hours} : ${mins} : ${secs} `;
+}
+function getTime(time1) {
+    const hours = pad(Math.floor(time1 % 86400000 / 3600000));
+    const mins = pad(Math.floor(time1 % 3600000 / 60000));
+    const secs = pad(Math.floor(time1 % 60000 / 1000));
+    return {
+        hours,
+        mins,
+        secs
+    };
+}
+function pad(value) {
+    return String(value).padStart(2, "0");
+}
+getTime(time);
 
 },{}]},["cVgJb","ebWYT"], "ebWYT", "parcelRequire2afd")
 
